@@ -1,3 +1,5 @@
+import { Button } from "./components/ui/button";
+
 function App() {
   return (
     <>
@@ -7,6 +9,7 @@ function App() {
         iusto cupiditate, obcaecati repellendus blanditiis odio assumenda
         quaerat est impedit facilis maiores? Temporibus.
       </h2>
+      <Button variant={"outline"}>CLIXK ME</Button>
     </>
   );
 }
