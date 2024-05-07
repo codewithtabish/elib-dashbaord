@@ -32,13 +32,19 @@ import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Link, Navigate, Outlet } from "react-router-dom";
 import useTokenStore from "@/store/store";
+import toast from "react-hot-toast";
 
 function DashboardLayout() {
-  const { token } = useTokenStore();
+  const { token, setToken } = useTokenStore();
 
   if (!token) {
     return <Navigate to={"/auth/login"} replace />;
   }
+
+  const handleLogout = () => {
+    setToken("");
+    toast.success("logout successfully ..");
+  };
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -212,7 +218,15 @@ function DashboardLayout() {
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem>
+                <Button
+                  variant={"ghost"}
+                  className="text-orange-600 p-1 text-center hover:shadow-sm"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </Button>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
