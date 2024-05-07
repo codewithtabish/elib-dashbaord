@@ -9,6 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import api from "@/http/api";
+import useTokenStore from "@/store/store";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
 import { useRef } from "react";
@@ -18,11 +19,13 @@ import { Link, useNavigate } from "react-router-dom";
 const LoginPage = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const { setToken } = useTokenStore();
   const navigate = useNavigate();
   const mutation = useMutation({
     mutationFn: api.loginMethod,
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success("Successfully login!");
+      setToken(data?.data?.token);
       navigate("/dashboard/home");
     },
     onError: (error) => {
