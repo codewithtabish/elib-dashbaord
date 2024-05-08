@@ -28,10 +28,12 @@ const PaginationDesign = ({ page, handlePage, limit, handlePrevious }: any) => {
         <PaginationItem>
           <PaginationEllipsis />
         </PaginationItem>
+      </PaginationContent>
+      {page !== 6 && (
         <PaginationItem className="cursor-pointer" onClick={handlePage}>
           <PaginationNext to="" />
         </PaginationItem>
-      </PaginationContent>
+      )}
     </Pagination>
   );
 };

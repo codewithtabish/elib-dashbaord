@@ -1,5 +1,4 @@
-import { MoreHorizontal } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { CirclePlus, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,8 +25,12 @@ import {
 } from "@/components/ui/table";
 import AppLoader from "./AppLoader";
 import ProductTableProps from "@/types/bookTypes";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import DeleteModal from "./DeleteModal";
 
 function BooksTable({ data, isLoading, isError }: ProductTableProps) {
+  const [showModal, setshowModal] = useState<boolean>(false);
   if (isLoading) {
     return <AppLoader />;
   }
@@ -35,15 +38,30 @@ function BooksTable({ data, isLoading, isError }: ProductTableProps) {
   if (isError) {
     return <p>The error is </p>;
   }
+  const handleModal = () => {
+    setshowModal(true);
+  };
 
   return (
     <div className="flex min-h-screen w-full my-8 flex-col bg-muted/40">
       <Card x-chunk="dashboard-06-chunk-0">
         <CardHeader>
-          <CardTitle>Books</CardTitle>
-          <CardDescription>
-            Manage your Books and view their sales performance.
-          </CardDescription>
+          <div className="flex justify-between items-center">
+            <div>
+              <CardTitle>Products</CardTitle>
+              <CardDescription>
+                Manage your Products and view their sales performance.
+              </CardDescription>
+            </div>
+            <div>
+              <Link to={"/dashboard/book/create"}>
+                <Button size="sm">
+                  <CirclePlus size={20} />
+                  <span className="ml-2 text-[12px]">Add Product</span>
+                </Button>
+              </Link>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <Table className="">
@@ -67,18 +85,20 @@ function BooksTable({ data, isLoading, isError }: ProductTableProps) {
               {data &&
                 data?.map((book: any, index: number) => {
                   return (
-                    <TableRow key={index}>
+                    <TableRow key={index} className="cursor-pointer">
                       <TableCell className="hidden sm:table-cell">
                         <img
                           alt="Product image"
                           className="aspect-square rounded-md object-cover"
                           height="34"
-                          src="/public/vite.svg"
+                          src={book?.image}
                           width="34"
                         />
                       </TableCell>
-                      <TableCell className="font-medium">
-                        {book?.title}
+                      <TableCell className="font-medium text-clip  end-0 md:max-w-[10%] ">
+                        {book?.title.length > 20
+                          ? book?.title.slice(0, 14) + "..."
+                          : book?.title}
                       </TableCell>
                       <TableCell>{book.category}</TableCell>
                       <TableCell>{book.price}</TableCell>
@@ -102,8 +122,17 @@ function BooksTable({ data, isLoading, isError }: ProductTableProps) {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem>Edit</DropdownMenuItem>
-                            <DropdownMenuItem>Delete</DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <Link to={"/dashboard/books/editbook"}>
+                                <span>Edit</span>
+                              </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={handleModal}
+                              className="cursor-pointer"
+                            >
+                              Delete
+                            </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>
@@ -120,6 +149,11 @@ function BooksTable({ data, isLoading, isError }: ProductTableProps) {
           </div>
         </CardFooter>
       </Card>
+      <DeleteModal
+        showModal={showModal}
+        handleModal={handleModal}
+        setshowModal={setshowModal}
+      />
     </div>
   );
 }

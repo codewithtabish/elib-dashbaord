@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Link, Navigate, Outlet } from "react-router-dom";
+import { Link, Navigate, NavLink, Outlet } from "react-router-dom";
 import useTokenStore from "@/store/store";
 import toast from "react-hot-toast";
 
@@ -65,21 +65,29 @@ function DashboardLayout() {
           </div>
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-              <Link
+              <NavLink
                 to="/dashboard/home"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                className={({ isActive }) => {
+                  return `flex items-center gap-3 rounded-lg ${
+                    isActive ? "bg-muted " : ""
+                  } px-3 py-2 text-primary transition-all hover:text-primary`;
+                }}
               >
                 <Home className="h-4 w-4" />
                 Home
-              </Link>
+              </NavLink>
 
-              <Link
+              <NavLink
                 to={"/dashboard/books"}
-                className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
+                className={({ isActive }) => {
+                  return `flex items-center gap-3 rounded-lg ${
+                    isActive ? "bg-muted" : ""
+                  } px-3 py-2 text-primary transition-all hover:text-primary`;
+                }}
               >
                 <Package className="h-4 w-4" />
                 Books{" "}
-              </Link>
+              </NavLink>
               <Link
                 to="#"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
@@ -208,7 +216,12 @@ function DashboardLayout() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
+                <img
+                  src="https://scontent.fisb6-1.fna.fbcdn.net/v/t1.6435-1/167553045_110184311170275_6296415998881349370_n.jpg?stp=dst-jpg_p200x200&_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_ohc=DriXEliSfIgQ7kNvgH8dcru&_nc_ht=scontent.fisb6-1.fna&oh=00_AfAxl416fG4zMUPEEO0RmM7GOq1Fz43aL6R3m_SRPXxSqg&oe=6661FF6B"
+                  alt=""
+                  className="w-8 object-cover h-8 rounded-full"
+                />
+                {/* <CircleUser  className="h-5 w-5" /> */}
                 <span className="sr-only">Toggle user menu</span>
               </Button>
             </DropdownMenuTrigger>
